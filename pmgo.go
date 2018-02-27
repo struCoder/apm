@@ -26,10 +26,7 @@ package main
 import (
 	"sync"
 
-	"github.com/struCoder/pmgo/lib/cli"
-	"github.com/struCoder/pmgo/lib/master"
 	"gopkg.in/alecthomas/kingpin.v2"
-
 	"github.com/sevlyar/go-daemon"
 
 	"os"
@@ -43,6 +40,8 @@ import (
 	"time"
 
 	log "github.com/Sirupsen/logrus"
+	"pmgo/lib/cli"
+	"pmgo/lib/master"
 )
 
 var (
@@ -82,6 +81,9 @@ var (
 
 	info     = app.Command("info", "Describe importance parameters of a process id")
 	infoName = info.Arg("name", "process name").Required().String()
+
+	logs           = app.Command("logs", "get stream of logs for specific process or all of them")
+	logsServiceName = logs.Arg("name", "process name").Required().String()
 )
 
 func main() {
@@ -128,6 +130,10 @@ func main() {
 		checkRemoteMasterServer()
 		cli := cli.InitCli(*dns, timeout)
 		cli.ProcInfo(*infoName)
+	case logs.FullCommand():
+		checkRemoteMasterServer()
+		cli := cli.InitCli(*dns, timeout)
+		cli.LogProcess(*logsServiceName)
 	}
 }
 

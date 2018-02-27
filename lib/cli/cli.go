@@ -8,8 +8,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
-	"github.com/struCoder/pmgo/lib/master"
-	"github.com/struCoder/pmgo/lib/utils"
+	"pmgo/lib/master"
+	"pmgo/lib/utils"
+	"github.com/hpcloud/tail"
 )
 
 // Cli is the command line client.
@@ -159,5 +160,30 @@ func (cli *Cli) DeleteAllProcess() {
 		proc := procResponse.Procs[id]
 		cli.remoteClient.DeleteProcess(proc.Name)
 		log.Infof("proc: %s has quit", proc.Name)
+	}
+}
+
+func (cli *Cli) LogProcess(processName string) {
+
+	processDetail := cli.remoteClient.GetProcByName(processName)
+	if len(*processDetail) == 0 {
+		log.Errorf("process %s not found", processName)
+		return
+	}
+
+	stringFilePath := cli.remoteClient.LogProcessName(processName)
+	if stringFilePath == nil {
+		log.Fatalf("Cannot find output file for %+v\n", processName)
+	}
+
+	t, err := tail.TailFile(*stringFilePath, tail.Config{Follow: true})
+
+	if err != nil {
+		log.Fatalf("Error found: %+v\n", err)
+		return
+	}
+
+	for line := range t.Lines {
+		fmt.Println(line.Text)
 	}
 }

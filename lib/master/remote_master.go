@@ -134,6 +134,11 @@ func (remote_master *RemoteMaster) GetProcByName(procName string, response *map[
 	return nil
 }
 
+func (remote_master *RemoteMaster) LogProcess(procName string, response *string) error {
+	*response = remote_master.master.ProcInfo(procName)["outFile"]
+	return nil
+}
+
 // StartRemoteMasterServer starts a remote pmgo server listening on dsn address and binding to
 // configFile.
 // It returns a RemoteMaster instance.
@@ -222,5 +227,11 @@ func (client *RemoteClient) MonitStatus() (ProcResponse, error) {
 func (client RemoteClient) GetProcByName(procName string) *map[string]string {
 	var response map[string]string
 	client.conn.Call("RemoteMaster.GetProcByName", procName, &response)
+	return &response
+}
+
+func (client RemoteClient) LogProcessName(procName string) *string {
+	var response string
+	client.conn.Call("RemoteMaster.LogProcess", procName, &response)
 	return &response
 }
