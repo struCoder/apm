@@ -1,8 +1,0 @@
-SysFolder = ""
-PidFile = ""
-OutFile = ""
-ErrFile = ""
-
-[Watcher]
-
-[Procs]
