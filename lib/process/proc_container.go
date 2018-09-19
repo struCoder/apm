@@ -41,6 +41,7 @@ type Proc struct {
 	Name      string
 	Cmd       string
 	Args      []string
+	Env       []string
 	Path      string
 	Pidfile   string
 	Outfile   string
@@ -64,9 +65,12 @@ func (proc *Proc) Start() error {
 		return err
 	}
 	wd, _ := os.Getwd()
+	if len(proc.Env) == 0 {
+		proc.Env = os.Environ()
+	}
 	procAtr := &os.ProcAttr{
 		Dir: wd,
-		Env: os.Environ(),
+		Env: proc.Env,
 		Files: []*os.File{
 			os.Stdin,
 			outFile,
