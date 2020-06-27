@@ -33,7 +33,7 @@ PMGO is a lightweight process manager written in Golang for Golang applications.
 
 
 
-## Change log(2019-12-12 updated)
+## Change log(2020-06-27 updated)
 
 [Change log](./changelog.md)
 
