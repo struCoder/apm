@@ -45,7 +45,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-
 var (
 	app     = kingpin.New("pmgo", "Aguia Process Manager.")
 	dns     = app.Flag("dns", "TCP Dns host.").Default(":9876").String()
@@ -80,7 +79,7 @@ var (
 	status = app.Command("list", "Get pmgo list.")
 
 	version        = app.Command("version", "get version")
-	currentVersion = "0.6.0"
+	currentVersion = "0.6.1"
 
 	info     = app.Command("info", "Describe importance parameters of a process id")
 	infoName = info.Arg("name", "process name").Required().String()

@@ -95,9 +95,7 @@ fmt.Println(os.Args[1:])
 ```
 
 
-### Beta Features(`git checkout beta and rebuild`)
-
-#### Start application from user input compiled binary
+### Start application from user input compiled binary
 
 ```bash
 # true means use user input compiled binary path
@@ -121,7 +119,7 @@ pmgo start /Users/strucoder/personalPro/goplace/main awesome_name true --args="a
 | [![paypal](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/strucoder) | [![alipay](https://img.shields.io/badge/Donate-alipay-blue.svg)](https://i.loli.net/2018/11/29/5bff95e2d29df.png) |
 
 ### By The Way
-In China Mainland, maybe you can't download some packages in golang.org, thus just click [here](https://gopm.io/download) to download and build packages.
+In China Mainland, maybe you can't download some packages in golang.org, thus just click [here](https://goproxy.io/zh/) to set `GOPROXY`
 ### LICENSE
 
 [MIT](https://github.com/struCoder/pmgo/blob/master/LICENSE)
