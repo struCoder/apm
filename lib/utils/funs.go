@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/olekukonko/tablewriter"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -74,4 +75,15 @@ func GetTableWriter() *tablewriter.Table {
 	table.SetRowSeparator("─")
 	table.SetColumnSeparator("│")
 	return table
+}
+
+// CheckSourceFolderExit will check source code folder exist
+func CheckSourceFolderExit(sourceFolder string) (bool, error) {
+	gopath := os.Getenv("GOPATH")
+	err := os.Chdir(gopath + "/src/" + sourceFolder)
+	if err != nil {
+		log.Errorln(sourceFolder+" doesn't exit under GOPATH", err)
+		return false, err
+	}
+	return true, nil
 }

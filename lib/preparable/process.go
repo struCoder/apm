@@ -7,7 +7,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/struCoder/pmgo/lib/process"
+	"github.com/struCoder/pmgo/lib/utils"
 )
 
 // ProcPreparable is a preparable with all the necessary informations to run
@@ -51,17 +53,27 @@ func (preparable *Preparable) PrepareBin() ([]byte, error) {
 	if preparable.SourcePath[len(preparable.SourcePath)-1] == '/' {
 		preparable.SourcePath = strings.TrimSuffix(preparable.SourcePath, "/")
 	}
+	isExist, err := utils.CheckSourceFolderExit(preparable.SourcePath)
+	if !isExist {
+		return make([]byte, 0), err
+	}
+
 	binPath := preparable.getBinPath()
 
 	cmd := ""
 	cmdArgs := []string{}
 	if preparable.Language == "go" {
 		cmd = "go"
-		cmdArgs = []string{"build", "-o", binPath, preparable.SourcePath + "/."}
+		sourceCodePath := os.Getenv("GOPATH") + "/src/" + preparable.SourcePath
+		cmdArgs = []string{"build", "-o", binPath, sourceCodePath + "/."}
 	}
-
 	preparable.Cmd = binPath
-	return exec.Command(cmd, cmdArgs...).Output()
+	out, err := exec.Command(cmd, cmdArgs...).Output()
+	if err != nil {
+		return []byte("build source fail!"), err
+	}
+	log.Infoln("build output: ", string(out))
+	return make([]byte, 0), nil
 }
 
 // Start will execute the process based on the information presented on the preparable.

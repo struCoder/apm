@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"time"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/fatih/color"
 	"github.com/olekukonko/tablewriter"
+	log "github.com/sirupsen/logrus"
 	"github.com/struCoder/pmgo/lib/master"
 	"github.com/struCoder/pmgo/lib/utils"
 )

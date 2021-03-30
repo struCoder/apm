@@ -85,8 +85,10 @@ $ pmgo list                                                  # Display status fo
 $ pmgo info app-name                                         # describe importance parameters of a process name
 ```
 
-#### Start your GO-application with parameters
+### Start your GO-application with parameters
 ```bash
+// pmgo will build your source code folder under $GOPATH/src by default
+// Here my tmp folder was: $GOPATH/src/tmp
 pmgo start tmp/ test --args "arg1 arg2 arg3"
 
 # In your application
