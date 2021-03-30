@@ -367,7 +367,7 @@ func (master *Master) Stop() error {
 	procs := master.ListProcs()
 	for id := range procs {
 		proc := procs[id]
-		log.Info("Stopping proc %s", proc.Identifier())
+		log.Infof("Stopping proc %s", proc.Identifier())
 		master.stop(proc)
 	}
 	log.Info("Saving and returning list of procs.")
