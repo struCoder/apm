@@ -46,7 +46,8 @@ type Master struct {
 	ErrFile   string           // ErrFile is the pmgo err log file path.
 	Watcher   *watcher.Watcher // Watcher is a watcher instance.
 
-	Procs map[string]process.ProcContainer // Procs is a map containing all procs started on pmgo.
+	Procs      map[string]process.ProcContainer // Procs is a map containing all procs started on pmgo.
+	configFile string                           // custom config filename
 }
 
 // DecodableMaster is a struct that the config toml file will decode to.
@@ -81,12 +82,13 @@ func InitMaster(configFile string) *Master {
 	}
 	// We need this hack because toml decoder doesn't decode to interfaces
 	master := &Master{
-		SysFolder: decodableMaster.SysFolder,
-		PidFile:   decodableMaster.PidFile,
-		OutFile:   decodableMaster.OutFile,
-		ErrFile:   decodableMaster.ErrFile,
-		Watcher:   decodableMaster.Watcher,
-		Procs:     procs,
+		SysFolder:  decodableMaster.SysFolder,
+		PidFile:    decodableMaster.PidFile,
+		OutFile:    decodableMaster.OutFile,
+		ErrFile:    decodableMaster.ErrFile,
+		Watcher:    decodableMaster.Watcher,
+		Procs:      procs,
+		configFile: configFile,
 	}
 
 	if master.SysFolder == "" {
@@ -389,7 +391,7 @@ func (master *Master) saveProcsWrapper() error {
 }
 
 func (master *Master) getConfigPath() string {
-	return path.Join(master.SysFolder, "config.toml")
+	return master.configFile
 }
 
 // IsExistProc current proc whether exist
